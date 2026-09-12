@@ -104,10 +104,10 @@ public class DataUtilities {
                     return binaryHelper(views, key, cmp, policy, mid+1 , r);
                 }
             } else {
-                return l;
+                return l - 1;
             }
     }
-return views.length;
+return views.length -1 ;
     }
 
 
