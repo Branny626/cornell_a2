@@ -107,7 +107,7 @@ public class DataUtilities {
                 return l - 1;
             }
     }
-return views.length -1 ;
+return views.length ;
     }
 
 

@@ -91,6 +91,26 @@ public class DataUtilitiesTest {
         assertEquals(5, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
     }
 
+    @DisplayName("WHEN no `views` record has the target dateTime, THEN `binarySearch()` "
+            + "with the DATETIME Comparator and RIGHT search policy returns the index of the "
+            + "right most view with a dateTime less than or equal to the target.")
+    @Test
+    public void testBinarySearchRightNoExactMatch() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime fourDaysAgo = now.minusDays(4);
+        LocalDateTime threeDaysAgo = now.minusDays(3);
+        LocalDateTime twoDaysAgo = now.minusDays(2);
+        LocalDateTime oneDayAgo = now.minusDays(1);
+        View[] views = new View[]{
+                new View("A", "A", fourDaysAgo),
+                new View("B", "B", threeDaysAgo),
+                new View("C", "C", oneDayAgo),
+                new View("D", "D", now)
+        };
+        View key = new View("X", "X", twoDaysAgo);
+        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+    }
+
 
     /**
      * Asserts that `views[l..r)` is sorted according to `cmp`
