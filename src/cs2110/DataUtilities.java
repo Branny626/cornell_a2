@@ -106,8 +106,8 @@ public class DataUtilities {
             } else {
                 return l;
             }
-    }
-return views.length ;
+        }
+        return 1010101100;
     }
 
 
