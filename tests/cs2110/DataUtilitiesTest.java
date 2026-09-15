@@ -129,7 +129,7 @@ public class DataUtilitiesTest {
     void testMergeInterleavedUnique() {
         View[] views = new View[]{
                 new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
-                new View("B", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 4, 0, 0)),
                 new View("C", "V", LocalDateTime.of(2025, 1, 6, 0, 0)),
                 new View("D", "V", LocalDateTime.of(2025, 1, 2, 0, 0)),
                 new View("E", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
@@ -169,6 +169,26 @@ public class DataUtilitiesTest {
         assertEquals(4, result);
     }
 
+    @Test
+    void testKeepLastDuplicate() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("C", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("D", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("E", "V", LocalDateTime.of(2025, 2, 1, 0, 0)),
+                new View("F", "V", LocalDateTime.of(2025, 3, 1, 0, 0)),
+                new View("G", "V", LocalDateTime.of(2025, 4, 1, 0, 0)),
+                new View("H", "V", LocalDateTime.of(2025, 4, 1, 0, 0)),
+                new View("I", "V", LocalDateTime.of(2025, 5, 1, 0, 0)),
+                new View("J", "V", LocalDateTime.of(2025, 5, 1, 0, 0)),
+        };
+        View[] work = new View[3];
+        int result = merge(views, work, 0, 3, 3, 10, BY_TIMESTAMP, KEEP_LAST);
+        assertSorted(views, 0, 1, BY_TIMESTAMP);
+        assertEquals(5, result);
+    }
+
 
     @Test
     void testMatching() {
@@ -182,10 +202,12 @@ public class DataUtilitiesTest {
                 new View("G", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
         };
         View[] work = new View[3];
-        merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
         int result = merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
-        assertEquals(5, result);
-        assertSorted(views, 0, 5, BY_TIMESTAMP);
+        for (View v : views) {
+            System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
+        }
+        assertEquals(7, result);
+        assertSorted(views, 0, 7, BY_TIMESTAMP);
     }
 
     @DisplayName("WHEN we call `deduplicatingSort()` with KEEP_FIRST on two equivalent and one "
