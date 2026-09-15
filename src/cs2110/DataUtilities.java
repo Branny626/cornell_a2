@@ -168,17 +168,15 @@ public class DataUtilities {
         for (int l = leftBegin; l < leftEnd; l++){
             work[l] = views[l];
         }
+        int i = 0;
+        int j = rightBegin;
+        int k = leftBegin;
 
         if(policy == KEEP_ALL){
-            int i = 0;
-            int j = rightBegin;
-            int k = leftBegin;
-
-            while(k<+leftEnd+rightEnd-rightBegin){
-                if(j==rightEnd|| cmp.compare(work[i],views[j]) <= 0){
+            while(k<leftEnd+rightEnd-rightBegin){
+                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
                     views[k] = work[i];
-                    if (i != work.length - 1)
-                        i++;
+                    i++;
                 }
                 else {
                     views[k] = views[j];
@@ -186,11 +184,24 @@ public class DataUtilities {
                 }
                 k++;
             }
+        }
+        if(policy == KEEP_LAST){
+            while(k<leftEnd+rightEnd-rightBegin){
+                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
+                    views[k] = work[i];
+                    i++;
+                }
+//                else if ()
+                else {
+                    views[k] = views[j];
+                    j++;
+                }
+                k++;
+            }
 
-            return k;
         }
 
-        return -1;
+        return k;
     }
 
 }

@@ -129,7 +129,7 @@ public class DataUtilitiesTest {
     void testMergeInterleavedUnique() {
         View[] views = new View[]{
                 new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
-                new View("B", "V", LocalDateTime.of(2025, 1, 4, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
                 new View("C", "V", LocalDateTime.of(2025, 1, 6, 0, 0)),
                 new View("D", "V", LocalDateTime.of(2025, 1, 2, 0, 0)),
                 new View("E", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
@@ -139,6 +139,9 @@ public class DataUtilitiesTest {
         View[] work = new View[3];
         int result = merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
         assertSorted(views, 0, 7, BY_TIMESTAMP);
+        for (View v : views) {
+            System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
+        }
         assertEquals(7, result);
     }
 
