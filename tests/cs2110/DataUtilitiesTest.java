@@ -136,10 +136,10 @@ public class DataUtilitiesTest {
                 new View("F", "V", LocalDateTime.of(2025, 1, 5, 0, 0)),
                 new View("G", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
         };
-        View[] work = new View[3];
-        merge(views, work, 0, 3, 4, 7, BY_TIMESTAMP, KEEP_ALL);
-        assertSorted(views, 0, 6, BY_TIMESTAMP);
-//        assertEquals(7, result);
+        View[] work = new View[2];
+        int result = merge(views, work, 0, 2, 5, 7, BY_TIMESTAMP, KEEP_ALL);
+        assertSorted(views, 0, 4, BY_TIMESTAMP);
+        assertEquals(4, result);
     }
 
 

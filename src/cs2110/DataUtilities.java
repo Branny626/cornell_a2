@@ -177,7 +177,8 @@ public class DataUtilities {
             while(k<+leftEnd+rightEnd-rightBegin){
                 if(j==rightEnd|| cmp.compare(work[i],views[j]) <= 0){
                     views[k] = work[i];
-                    i++;
+                    if (i != work.length - 1)
+                        i++;
                 }
                 else {
                     views[k] = views[j];
@@ -186,7 +187,7 @@ public class DataUtilities {
                 k++;
             }
 
-            return k+1;
+            return k;
         }
 
         return -1;
