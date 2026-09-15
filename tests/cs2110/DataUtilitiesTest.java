@@ -136,8 +136,32 @@ public class DataUtilitiesTest {
                 new View("F", "V", LocalDateTime.of(2025, 1, 5, 0, 0)),
                 new View("G", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
         };
-        View[] work = new View[2];
-        int result = merge(views, work, 0, 2, 5, 7, BY_TIMESTAMP, KEEP_ALL);
+        View[] work = new View[3];
+        int result = merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
+        assertSorted(views, 0, 7, BY_TIMESTAMP);
+        assertEquals(7, result);
+    }
+
+    @DisplayName("WHEN we merge on timestamps using the KEEP_ALL deduplication policy AND the "
+            + "records have a gap between the subarrays and have unique timestamps, THEN the "
+            + "merged subarray is correctly sorted.")
+
+    @Test
+    void testMergeArrayGap() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 4, 0, 0)),
+                new View("C", "V", LocalDateTime.of(2025, 1, 6, 0, 0)),
+                new View("D", "V", LocalDateTime.of(2025, 1, 4, 0, 0)),
+                new View("E", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
+                new View("F", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
+                new View("G", "V", LocalDateTime.of(2025, 1, 5, 0, 0)),
+                new View("H", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
+                new View("I", "V", LocalDateTime.of(2025, 1, 8, 0, 0)),
+                new View("J", "V", LocalDateTime.of(2025, 2, 9, 0, 0)),
+        };
+        View[] work = new View[3];
+        int result = merge(views, work, 0, 3, 9, 10, BY_TIMESTAMP, KEEP_ALL);
         assertSorted(views, 0, 4, BY_TIMESTAMP);
         assertEquals(4, result);
     }
