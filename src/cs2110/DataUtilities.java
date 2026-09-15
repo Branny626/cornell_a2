@@ -165,26 +165,28 @@ public class DataUtilities {
     @SuppressWarnings("SameParameterValue")
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
                      int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
-        work = copyOfRange(views,leftBegin,leftEnd);
+        for (int l = leftBegin; l < leftEnd; l++){
+            work[l] = views[l];
+        }
 
         if(policy == KEEP_ALL){
             int i = 0;
             int j = rightBegin;
             int k = leftBegin;
 
-            while(k<j){
+            while(k<+leftEnd+rightEnd-rightBegin){
                 if(j==rightEnd|| cmp.compare(work[i],views[j]) <= 0){
                     views[k] = work[i];
                     i++;
                 }
-                else{
+                else {
                     views[k] = views[j];
                     j++;
                 }
                 k++;
             }
 
-            return k;
+            return k+1;
         }
 
         return -1;
