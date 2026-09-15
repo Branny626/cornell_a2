@@ -165,36 +165,29 @@ return views.length ;
     @SuppressWarnings("SameParameterValue")
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
             int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
+        work = copyOfRange(views,leftBegin,leftEnd);
 
-        if(policy == KEEP_FIRST){
-            View temp;
-            int i = leftBegin;
+        if(policy == KEEP_ALL){
+            int i = 0;
             int j = rightBegin;
             int k = leftBegin;
-            while (i<leftEnd-1 && j<rightEnd){
-                if(cmp.compare(views[i], views[j]) <0){
-                    k++;
-                    if(cmp.compare(views[k], views[j]) == 0){
-                            j++;
-                    }
-                    else if(cmp.compare(views[k], views[j])< 0){
-                        i++;
-                    }
-                    else if(cmp.compare(views[k], views[j])> 0){
-                        temp = views[k];
-                        views[i+1] = views[j];
-                        j++;
-                        i++;
-                    }
+
+            while(k<j){
+                if(j==rightEnd|| cmp.compare(work[i],views[j]) <= 0){
+                    views[k] = work[i];
+                    i++;
                 }
-                else if(cmp.compare(views[i], views[j])==0){
+                else{
+                    views[k] = views[j];
                     j++;
                 }
+                k++;
             }
+
         return k;
         }
 
-        // TODO 3: Implement this method according to its specifications.
-        throw new UnsupportedOperationException();
+        return -1;
     }
+
 }
