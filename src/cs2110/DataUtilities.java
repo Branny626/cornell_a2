@@ -208,7 +208,30 @@ public class DataUtilities {
             }
 
         }
+        if(policy == KEEP_FIRST){
+            while(k<endOfSortedArray){
+                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
+                    if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
+                        k--;
+                        endOfSortedArray--;
+                        continue;
+                    }
 
+                    views[k] = work[i];
+                    i++;
+                }
+                else{
+                    if(k-leftBegin > 0 && cmp.compare(views[k-1], views[j]) == 0) {
+                        k--;
+                        endOfSortedArray--;
+                        continue;
+                    }
+                    views[k] = views[j];
+                    j++;
+                }
+                k++;
+            }
+        }
         return k;
     }
 
