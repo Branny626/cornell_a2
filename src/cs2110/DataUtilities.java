@@ -106,13 +106,8 @@ public class DataUtilities {
             } else {
                 return l;
             }
-<<<<<<< Updated upstream
         }
         return 1010101100;
-=======
-    }
-    return views.length ;
->>>>>>> Stashed changes
     }
 
 
@@ -135,7 +130,7 @@ public class DataUtilities {
      * empty entries.
      */
     static View[] deduplicatingSort(View[] views, Comparator<View> cmp,
-            DedupPolicy policy) {
+                                    DedupPolicy policy) {
         // TODO 4a: Call dedupMergeSortRecursive(), passing in a copy of the `views` array. Use its
         //  return value to obtain the return value for this method.
         throw new UnsupportedOperationException();
@@ -151,7 +146,7 @@ public class DataUtilities {
      * O(log(`end - begin`)) space complexity.
      */
     static int dedupMergeSortRecursive(View[] views, View[] work, int begin, int end,
-            Comparator<View> cmp, DedupPolicy policy) {
+                                       Comparator<View> cmp, DedupPolicy policy) {
         // TODO 4b: Implement recursive merge sort.
         throw new UnsupportedOperationException();
     }
@@ -169,7 +164,7 @@ public class DataUtilities {
      */
     @SuppressWarnings("SameParameterValue")
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
-            int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
+                     int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
         work = copyOfRange(views,leftBegin,leftEnd);
 
         if(policy == KEEP_ALL){
@@ -179,26 +174,6 @@ public class DataUtilities {
 
             while(k<j){
                 if(j==rightEnd|| cmp.compare(work[i],views[j]) <= 0){
-                    views[k] = work[i];
-                    i++;
-                }
-                else{
-                    views[k] = views[j];
-                    j++;
-                }
-                k++;
-            }
-
-        return k;
-        }
-
-        if(policy == KEEP_FIRST){
-            int i = 0;
-            int j = rightBegin;
-            int k = leftBegin;
-
-            while(k<j){
-                if(j==rightEnd || cmp.compare(work[i],views[j]) < 0){
                     views[k] = work[i];
                     i++;
                 }
