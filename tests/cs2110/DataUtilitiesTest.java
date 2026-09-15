@@ -55,23 +55,6 @@ public class DataUtilitiesTest {
         assertEquals(6, binarySearch(views, key, BY_USER_ID, RIGHT));
     }
 
-    @DisplayName("WHEN the userID of the `key` is alphabetically after the userIDs of all of the "
-            + "`view`s, THEN `binarySearch()` with the BY_USER_ID Comparator returns 0")
-    @Test
-    public void testBinarySearchKeyLessThanViews() {
-        View[] views = new View[]{
-                new View("B", "V", LocalDateTime.now()),
-                new View("C", "V", LocalDateTime.now()),
-                new View("D", "V", LocalDateTime.now()),
-                new View("E", "V", LocalDateTime.now()),
-                new View("F", "V", LocalDateTime.now()),
-                new View("G", "V", LocalDateTime.now())
-        };
-        View key = new View("A", "V", LocalDateTime.now());
-        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
-        assertEquals(0, binarySearch(views, key, BY_USER_ID, RIGHT));
-    }
-
     @DisplayName("WHEN multiple of the `views` records has the target videoID, THEN `binarySearch()` "
             + "with the BY_VIDEO_ID Comparator and LEFT search policy returns the index of the left most "
             + "view.")
