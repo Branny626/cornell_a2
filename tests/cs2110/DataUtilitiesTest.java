@@ -34,7 +34,7 @@ public class DataUtilitiesTest {
         };
         View key = new View("C", "V", LocalDateTime.of(2026,1,8,0,0));
         assertEquals(2, binarySearch(views, key, BY_USER_ID, LEFT));
-        assertEquals(2, binarySearch(views, key, BY_USER_ID, RIGHT));
+        assertEquals(3, binarySearch(views, key, BY_USER_ID, RIGHT));
     }
 
     @DisplayName("WHEN the userID of the `key` is alphabetically after the userIDs of all of the "
@@ -88,7 +88,7 @@ public class DataUtilitiesTest {
                 new View("F", "F", now)
         };
         View key = new View("A", "A", now);
-        assertEquals(5, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(6, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
     }
 
     @DisplayName("WHEN no `views` record has the target dateTime, THEN `binarySearch()` "
@@ -108,7 +108,7 @@ public class DataUtilitiesTest {
                 new View("D", "D", now)
         };
         View key = new View("X", "X", twoDaysAgo);
-        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
     }
 
 

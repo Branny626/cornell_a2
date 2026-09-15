@@ -104,7 +104,7 @@ public class DataUtilities {
                     return binaryHelper(views, key, cmp, policy, mid+1 , r);
                 }
             } else {
-                return l - 1;
+                return l;
             }
     }
 return views.length ;
@@ -165,6 +165,35 @@ return views.length ;
     @SuppressWarnings("SameParameterValue")
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
             int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
+
+        if(policy == KEEP_FIRST){
+            View temp;
+            int i = leftBegin;
+            int j = rightBegin;
+            int k = leftBegin;
+            while (i<leftEnd-1 && j<rightEnd){
+                if(cmp.compare(views[i], views[j]) <0){
+                    k++;
+                    if(cmp.compare(views[k], views[j]) == 0){
+                            j++;
+                    }
+                    else if(cmp.compare(views[k], views[j])< 0){
+                        i++;
+                    }
+                    else if(cmp.compare(views[k], views[j])> 0){
+                        temp = views[k];
+                        views[i+1] = views[j];
+                        j++;
+                        i++;
+                    }
+                }
+                else if(cmp.compare(views[i], views[j])==0){
+                    j++;
+                }
+            }
+        return k;
+        }
+
         // TODO 3: Implement this method according to its specifications.
         throw new UnsupportedOperationException();
     }
