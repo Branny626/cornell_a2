@@ -156,6 +156,27 @@ public class DataUtilitiesTest {
         View[] work = new View[3];
         merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
         assertSorted(views, 0, 7, BY_TIMESTAMP);
+        int result = merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
+        assertEquals(7, result);
+    }
+
+
+    @Test
+    void testMatching() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
+                new View("C", "V", LocalDateTime.of(2025, 1, 6, 0, 0)),
+                new View("D", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("E", "V", LocalDateTime.of(2025, 1, 3, 0, 0)),
+                new View("F", "V", LocalDateTime.of(2025, 1, 5, 0, 0)),
+                new View("G", "V", LocalDateTime.of(2025, 1, 7, 0, 0)),
+        };
+        View[] work = new View[3];
+        merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
+        int result = merge(views, work, 0, 3, 3, 7, BY_TIMESTAMP, KEEP_ALL);
+        assertEquals(5, result);
+        assertSorted(views, 0, 5, BY_TIMESTAMP);
     }
 
     @DisplayName("WHEN we call `deduplicatingSort()` with KEEP_FIRST on two equivalent and one "

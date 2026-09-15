@@ -106,8 +106,13 @@ public class DataUtilities {
             } else {
                 return l;
             }
+<<<<<<< Updated upstream
         }
         return 1010101100;
+=======
+    }
+    return views.length ;
+>>>>>>> Stashed changes
     }
 
 
@@ -185,6 +190,26 @@ public class DataUtilities {
             }
 
         return k;
+        }
+
+        if(policy == KEEP_FIRST){
+            int i = 0;
+            int j = rightBegin;
+            int k = leftBegin;
+
+            while(k<j){
+                if(j==rightEnd || cmp.compare(work[i],views[j]) < 0){
+                    views[k] = work[i];
+                    i++;
+                }
+                else{
+                    views[k] = views[j];
+                    j++;
+                }
+                k++;
+            }
+
+            return k;
         }
 
         return -1;
