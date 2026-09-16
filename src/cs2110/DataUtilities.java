@@ -133,7 +133,7 @@ public class DataUtilities {
                                     DedupPolicy policy) {
         View[] copy = copyOfRange(views,0, views.length);
         View[] work = new View[views.length];
-        int x = dedupMergeSortRecursive(copy, work ,0, views.length, cmp,policy);
+        int x = dedupMergeSortRecursive(copy, work ,0, views.length, cmp, policy);
         return copyOfRange(copy,0,x);
         // TODO 4a: Call dedupMergeSortRecursive(), passing in a copy of the `views` array. Use its
         //  return value to obtain the return value for this method.
@@ -156,7 +156,7 @@ public class DataUtilities {
         }
         int mid = begin + (end-begin)/2;
         dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
-        dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
+        dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
         return merge(views,work, begin,mid,mid,end,cmp,policy);
     }
 

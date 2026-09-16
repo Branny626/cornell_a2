@@ -267,4 +267,28 @@ public class DataUtilitiesTest {
             System.out.println(sorted[i]);
         }
     }
+
+    @DisplayName("WHEN we call `deduplicatingSort()` with KEEP_LAST on , THEN the output contains"
+            + "the correct elements in the correct order.")
+    @Test
+    void testKeepLastRecursiveWHYNOTWORK() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("C", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("D", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("E", "V", LocalDateTime.of(2025, 2, 1, 0, 0)),
+                new View("F", "V", LocalDateTime.of(2025, 3, 1, 0, 0)),
+                new View("G", "V", LocalDateTime.of(2025, 4, 1, 0, 0)),
+                new View("H", "V", LocalDateTime.of(2025, 4, 1, 0, 0)),
+                new View("I", "V", LocalDateTime.of(2025, 5, 1, 0, 0)),
+                new View("J", "V", LocalDateTime.of(2025, 5, 1, 0, 0)),
+        };
+        View[] sorted = deduplicatingSort(views, BY_TIMESTAMP, KEEP_LAST);
+        for (int i= 0; i<sorted.length;i++){
+            System.out.println(sorted[i]);
+        }
+        assertEquals(5, sorted.length);
+        assertEquals("F", sorted[2].userID());
+    }
 }
