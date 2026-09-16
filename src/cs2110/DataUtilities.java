@@ -219,10 +219,10 @@ public class DataUtilities {
         }
         if(policy == KEEP_FIRST){
             while(k<endOfSortedArray){
-                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
+                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i], views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
-                        k--;
                         endOfSortedArray--;
+                        i++;
                         continue;
                     }
 
@@ -231,8 +231,8 @@ public class DataUtilities {
                 }
                 else{
                     if(k-leftBegin > 0 && cmp.compare(views[k-1], views[j]) == 0) {
-                        k--;
                         endOfSortedArray--;
+                        j++;
                         continue;
                     }
                     views[k] = views[j];

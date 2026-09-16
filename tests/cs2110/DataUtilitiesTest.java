@@ -185,6 +185,9 @@ public class DataUtilitiesTest {
         };
         View[] work = new View[3];
         int result = merge(views, work, 0, 3, 3, 10, BY_TIMESTAMP, KEEP_LAST);
+        for (View v : views) {
+            System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
+        }
         assertSorted(views, 0, 1, BY_TIMESTAMP);
         assertEquals(5, result);
     }
@@ -235,8 +238,8 @@ public class DataUtilitiesTest {
         View[] views = new View[]{
                 new View("A", "V", LocalDateTime.of(2026,1,2,0,0)),
                 new View("B", "V", LocalDateTime.of(2026,1,1,0,0)),
-                new View("D", "V", LocalDateTime.of(2026,1,1,0,0)),
                 new View("C", "V", LocalDateTime.of(2026,1,1,0,0)),
+                new View("D", "V", LocalDateTime.of(2026,1,1,0,0)),
         };
         View[] work = new View[3];
         int result = merge(views, work, 0, 1, 1, 3, BY_TIMESTAMP, KEEP_FIRST);
