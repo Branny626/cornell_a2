@@ -131,9 +131,12 @@ public class DataUtilities {
      */
     static View[] deduplicatingSort(View[] views, Comparator<View> cmp,
                                     DedupPolicy policy) {
+        View[] copy = copyOfRange(views,0, views.length);
+        View[] work = new View[views.length];
+        int x = dedupMergeSortRecursive(copy, work ,0, views.length, cmp,policy);
+        return copyOfRange(copy,0,x);
         // TODO 4a: Call dedupMergeSortRecursive(), passing in a copy of the `views` array. Use its
         //  return value to obtain the return value for this method.
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -148,7 +151,13 @@ public class DataUtilities {
     static int dedupMergeSortRecursive(View[] views, View[] work, int begin, int end,
                                        Comparator<View> cmp, DedupPolicy policy) {
         // TODO 4b: Implement recursive merge sort.
-        throw new UnsupportedOperationException();
+        if((end-begin)<= 1){
+            return end-begin;
+        }
+        int mid = begin + (end-begin)/2;
+        dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
+        dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
+        return merge(views,work, begin,mid,mid,end,cmp,policy);
     }
 
     /**
@@ -166,7 +175,7 @@ public class DataUtilities {
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
                      int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
         for (int l = leftBegin; l < leftEnd; l++){
-            work[l] = views[l];
+            work[l-leftBegin] = views[l];
         }
         int i = 0;
         int j = rightBegin;
@@ -174,8 +183,8 @@ public class DataUtilities {
         int endOfSortedArray = leftEnd+rightEnd-rightBegin;
 
         if(policy == KEEP_ALL){
-            while(k<leftEnd+rightEnd-rightBegin){
-                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
+            while(k< endOfSortedArray){
+                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     views[k] = work[i];
                     i++;
                 }
@@ -188,7 +197,7 @@ public class DataUtilities {
         }
         if(policy == KEEP_LAST){
             while(k<endOfSortedArray){
-                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
+                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(work[i], views[k-1]) == 0) {
                         k--;
                         endOfSortedArray--;
@@ -210,7 +219,7 @@ public class DataUtilities {
         }
         if(policy == KEEP_FIRST){
             while(k<endOfSortedArray){
-                if(i != work.length && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
+                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) < 0)){
                     if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
                         k--;
                         endOfSortedArray--;

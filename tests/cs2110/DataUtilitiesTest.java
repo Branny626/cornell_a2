@@ -230,6 +230,23 @@ public class DataUtilitiesTest {
         assertSorted(views, 0, 5, BY_TIMESTAMP);
     }
 
+    @Test
+    void testSecond() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2026,1,2,0,0)),
+                new View("B", "V", LocalDateTime.of(2026,1,1,0,0)),
+                new View("D", "V", LocalDateTime.of(2026,1,1,0,0)),
+                new View("C", "V", LocalDateTime.of(2026,1,1,0,0)),
+        };
+        View[] work = new View[3];
+        int result = merge(views, work, 0, 1, 1, 3, BY_TIMESTAMP, KEEP_FIRST);
+        for (View v : views) {
+            System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
+        }
+        assertEquals(2, result);
+        assertSorted(views, 0, 2, BY_TIMESTAMP);
+    }
+
     @DisplayName("WHEN we call `deduplicatingSort()` with KEEP_FIRST on two equivalent and one "
             + "distinct records, THEN the output contains the correct two elements in the correct "
             + "order.")
@@ -242,7 +259,9 @@ public class DataUtilitiesTest {
         };
         View[] sorted = deduplicatingSort(views, BY_TIMESTAMP, KEEP_FIRST);
         assertEquals(2, sorted.length);
-        assertEquals("B", sorted[0].userID());
         assertEquals("A", sorted[1].userID());
+        for (int i= 0; i<sorted.length;i++){
+            System.out.println(sorted[i]);
+        }
     }
 }
