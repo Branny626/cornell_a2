@@ -157,7 +157,7 @@ public class DataUtilities {
         int mid = begin + (end-begin)/2;
         dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
         dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
-        return merge(views,work, begin,mid,mid,end,cmp,policy);
+        return merge(views,work,begin,mid,mid,end,cmp,policy);
     }
 
     /**
@@ -174,16 +174,18 @@ public class DataUtilities {
     @SuppressWarnings("SameParameterValue")
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
                      int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
-        for (int l = leftBegin; l < leftEnd; l++){
-            work[l-leftBegin] = views[l];
-        }
         int i = 0;
+        for (int l = leftBegin; l < leftEnd; l++){
+            work[i] = views[l];
+            i++;
+        }
+        i = 0;
         int j = rightBegin;
         int k = leftBegin;
-        int endOfSortedArray = leftEnd+rightEnd-rightBegin;
+        int count = 0;
 
         if(policy == KEEP_ALL){
-            while(k< endOfSortedArray){
+            while(k< leftEnd+rightEnd-rightBegin){
                 if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     views[k] = work[i];
                     i++;
@@ -192,25 +194,30 @@ public class DataUtilities {
                     views[k] = views[j];
                     j++;
                 }
+                count++;
                 k++;
             }
         }
         if(policy == KEEP_LAST){
-            while(k<endOfSortedArray){
-                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
+            while(k<leftEnd+rightEnd-rightBegin){
+                if (j==rightEnd && i == leftEnd-leftBegin) {
+                    views[k] = (cmp.compare(views[j-1], work[i-1]) >= 0) ? views[j-1] : work[i-1];
+                } else if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(work[i], views[k-1]) == 0) {
                         k--;
-                        endOfSortedArray--;
+                        count--;
                     }
                     views[k] = work[i];
                     i++;
+                    count++;
                 }
                 else {
                     if (k-leftBegin > 0 && cmp.compare(views[j], views[k-1]) == 0) {
                         k--;
-                        endOfSortedArray--;
+                        count--;
                     }
                     views[k] = views[j];
+                    count++;
                     j++;
                 }
                 k++;
@@ -218,30 +225,32 @@ public class DataUtilities {
 
         }
         if(policy == KEEP_FIRST){
-            while(k<endOfSortedArray){
-                if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i], views[j]) <= 0)){
+            while(k<leftEnd+rightEnd-rightBegin){
+                if (j==rightEnd && i == leftEnd-leftBegin) {
+                    views[k] = (cmp.compare(work[i-1], views[j-1]) >= 0) ? work[i-1] : views[j-1];
+                } else if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i], views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
-                        endOfSortedArray--;
                         i++;
                         continue;
                     }
 
                     views[k] = work[i];
                     i++;
+                    count++;
                 }
                 else{
                     if(k-leftBegin > 0 && cmp.compare(views[k-1], views[j]) == 0) {
-                        endOfSortedArray--;
                         j++;
                         continue;
                     }
                     views[k] = views[j];
                     j++;
+                    count++;
                 }
                 k++;
             }
         }
-        return k;
+        return count;
     }
 
 }

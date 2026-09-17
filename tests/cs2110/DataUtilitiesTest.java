@@ -188,7 +188,7 @@ public class DataUtilitiesTest {
         for (View v : views) {
             System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
         }
-        assertSorted(views, 0, 1, BY_TIMESTAMP);
+        assertSorted(views, 0, 5, BY_TIMESTAMP);
         assertEquals(5, result);
     }
 
@@ -242,7 +242,7 @@ public class DataUtilitiesTest {
                 new View("D", "V", LocalDateTime.of(2026,1,1,0,0)),
         };
         View[] work = new View[3];
-        int result = merge(views, work, 0, 1, 1, 3, BY_TIMESTAMP, KEEP_FIRST);
+        int result = merge(views, work, 0, 1, 1, 4, BY_TIMESTAMP, KEEP_FIRST);
         for (View v : views) {
             System.out.println(v.userID() + ", " + v.videoID() + ", " + v.timestamp());
         }
@@ -271,7 +271,7 @@ public class DataUtilitiesTest {
     @DisplayName("WHEN we call `deduplicatingSort()` with KEEP_LAST on , THEN the output contains"
             + "the correct elements in the correct order.")
     @Test
-    void testKeepLastRecursiveWHYNOTWORK() {
+    void testKeepLastRecursive() {
         View[] views = new View[]{
                 new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
                 new View("B", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
