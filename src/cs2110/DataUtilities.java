@@ -201,7 +201,7 @@ public class DataUtilities {
         if(policy == KEEP_LAST){
             while(k<leftEnd+rightEnd-rightBegin){
                 if (j==rightEnd && i == leftEnd-leftBegin) {
-                    views[k] = (cmp.compare(views[j-1], work[i-1]) >= 0) ? views[j-1] : work[i-1];
+                    views[k] = views[k-1];
                 } else if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(work[i], views[k-1]) == 0) {
                         k--;
@@ -227,7 +227,7 @@ public class DataUtilities {
         if(policy == KEEP_FIRST){
             while(k<leftEnd+rightEnd-rightBegin){
                 if (j==rightEnd && i == leftEnd-leftBegin) {
-                    views[k] = (cmp.compare(work[i-1], views[j-1]) >= 0) ? work[i-1] : views[j-1];
+                    views[k] = views[k-1];
                 } else if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i], views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
                         i++;
