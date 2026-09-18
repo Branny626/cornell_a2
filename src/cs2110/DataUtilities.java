@@ -158,9 +158,11 @@ public class DataUtilities {
             if (cmp.compare(views[i - 1], views[i]) == 0) {
                 if (i == end - 1)
                     return 1;
+                continue;
             }
+            break;
         }
-        
+
         int mid = begin + (end - begin) / 2;
         int i = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
         int j = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
