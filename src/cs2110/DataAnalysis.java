@@ -36,11 +36,27 @@ public class DataAnalysis {
      */
     @SuppressWarnings("SameParameterValue")
     static int countDistinctUsersInTimeInterval(View[] views, LocalDateTime start, LocalDateTime end) {
-        // TODO 5: Implement this method according to its specifications. Your definition must use
-        //  the `binarySearch()`, `copyOfRange()`, and/or `deduplicatingSort()` methods of the
-        //  `DataUtilities` class to manipulate the array data. You may not directly access the
-        //  array contents. Label each line of with its worst-case runtime complexity.
-        throw new UnsupportedOperationException();
+        View[] work = copyOfRange(views,0, views.length);
+        work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
+        View key = new View(null,null, end);
+        View key1 = new View(null,null, start );
+        int j = binarySearch(work,key,BY_TIMESTAMP,RIGHT);
+        int i = binarySearch(work,key1,BY_TIMESTAMP,LEFT);
+        String[] storage = new String[work.length];
+        int storageCount = 0;
+        for (int k = i; k<j;k++){
+            boolean checker = false;
+            for (int p = 0; p <storageCount; p++){
+                if(work[k].timestamp().equals(storage[p])){
+                    checker = true;
+                }
+            }
+            if (!checker){
+                storage[storageCount] = work[k].userID();
+                storageCount++;
+            }
+        }
+        return storageCount;
     }
 
     /**
