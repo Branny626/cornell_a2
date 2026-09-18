@@ -315,4 +315,26 @@ public class DataUtilitiesTest {
         assertEquals(8, sorted.length);
         assertEquals("A", sorted[0].userID());
     }
+    @Test
+    void testKeepFirstAllDuplicatesRecursive() {
+        View[] views = new View[]{
+                new View("A", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("B", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("C", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("D", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("E", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("F", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("G", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("H", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("I", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("J", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+                new View("K", "V", LocalDateTime.of(2025, 1, 1, 0, 0)),
+        };
+        View[] sorted = deduplicatingSort(views, BY_TIMESTAMP, KEEP_FIRST);
+        for (int i= 0; i<sorted.length;i++){
+            System.out.println(sorted[i]);
+        }
+        assertEquals(1, sorted.length);
+        assertEquals("A", sorted[0].userID());
+    }
 }

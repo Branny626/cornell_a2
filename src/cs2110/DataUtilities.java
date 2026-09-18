@@ -150,14 +150,21 @@ public class DataUtilities {
      */
     static int dedupMergeSortRecursive(View[] views, View[] work, int begin, int end,
                                        Comparator<View> cmp, DedupPolicy policy) {
-        // TODO 4b: Implement recursive merge sort.
-        if((end-begin)<= 1){
+        // TODO 4b: Implement recursive merge sort
+        if (end-begin <= 1)
             return end-begin;
+
+        for (int i = begin + 1; i < end; i++) {
+            if (cmp.compare(views[i - 1], views[i]) == 0) {
+                if (i == end - 1)
+                    return 1;
+            }
         }
-        int mid = begin + (end-begin)/2;
+        
+        int mid = begin + (end - begin) / 2;
         int i = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
         int j = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
-        return merge(views,work,begin,begin+i,mid,mid+j,cmp,policy);
+        return merge(views, work, begin, begin + i, mid, mid + j, cmp, policy);
     }
 
     /**
