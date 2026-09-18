@@ -36,28 +36,30 @@ public class DataAnalysis {
      */
     @SuppressWarnings("SameParameterValue")
     static int countDistinctUsersInTimeInterval(View[] views, LocalDateTime start, LocalDateTime end) {
-        View[] work = copyOfRange(views,0, views.length);
-        work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
-        View key = new View(null,null, end);
-        View key1 = new View(null,null, start );
-        int j = binarySearch(work,key,BY_TIMESTAMP,RIGHT);
-        int i = binarySearch(work,key1,BY_TIMESTAMP,LEFT);
-        String[] storage = new String[work.length];
-        int storageCount = 0;
-        for (int k = i; k<j;k++){
-            boolean checker = false;
-            for (int p = 0; p <storageCount; p++){
-                if(work[k].timestamp().equals(storage[p])){
-                    checker = true;
-                }
-            }
-            if (!checker){
-                storage[storageCount] = work[k].userID();
-                storageCount++;
-            }
-        }
-        return storageCount;
+    // Runtime complexity of O(N)
+            View[] work = copyOfRange(views,0, views.length);
+    // Runtime complexity of O(NlogN)
+            work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
+    // Runtime complexity of O(1)
+            View key = new View(null,null, end);
+    // Runtime complexity of O(1)
+            View key1 = new View(null,null, start );
+    // Runtime complexity of O(logN)
+            int i = binarySearch(work,key1,BY_TIMESTAMP,LEFT);
+    // Runtime complexity of O(logN)
+            int j = binarySearch(work,key,BY_TIMESTAMP,RIGHT);
+    // Runtime complexity of O(N)
+            View[] anotherWork = copyOfRange(work,i,j);
+    // Runtime complexity of O(NlogU)
+            return deduplicatingSort(anotherWork,BY_USER_ID,KEEP_FIRST).length;
     }
+
+/**
+
+ * Its overall runtime complexity is O(NlogN), because O(N) + O(NlogN) + O(logN)
+ * + O(N) + O(NlogU) = O(NlogN).
+
+ */
 
     /**
      * Returns an array of length `k` containing the Views of the last `k` distinct videos that the
