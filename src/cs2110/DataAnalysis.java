@@ -52,14 +52,11 @@ public class DataAnalysis {
             View[] anotherWork = copyOfRange(work,i,j);
     // Runtime complexity of O(NlogU)
             return deduplicatingSort(anotherWork,BY_USER_ID,KEEP_FIRST).length;
+        /**
+         * Its overall runtime complexity is O(NlogN), because O(N) + O(NlogN) + O(logN)
+         * + O(N) + O(NlogU) = O(NlogN).
+         */
     }
-
-/**
-
- * Its overall runtime complexity is O(NlogN), because O(N) + O(NlogN) + O(logN)
- * + O(N) + O(NlogU) = O(NlogN).
-
- */
 
     /**
      * Returns an array of length `k` containing the Views of the last `k` distinct videos that the
@@ -73,37 +70,35 @@ public class DataAnalysis {
      */
     @SuppressWarnings("SameParameterValue")
     static View[] lastKViewedByUser(View[] views, String userID, int k) {
-        for (int m = 0; m < views.length; m ++){
-            System.out.println(views[m]);
-        }
+        // Runtime complexity of O(NlogN)
         View[] work = deduplicatingSort(views, BY_USER_ID, KEEP_ALL);
-        System.out.println("Should be kept all?");
-        for (int m = 0; m < work.length; m ++){
-            System.out.println(work[m]);
-        }
         // Runtime complexity of O(1)
         View key = new View(userID,null, null);
         // Runtime complexity of O(logN)
         int i = binarySearch(work,key,BY_USER_ID,LEFT);
-        System.out.println(i);
         // Runtime complexity of O(logN)
         int j = binarySearch(work,key,BY_USER_ID,RIGHT);
-        System.out.println(j);
-
-
+        // Runtime complexity of O(M)
         work = copyOfRange(work,i,j);
-
-//        System.out.println("After Sorting");
-        work = deduplicatingSort(work,BY_VIDEO_ID,KEEP_LAST);
-//        for (int m = 0; m < work.length; m ++){
-//            System.out.println(work[m]);
-//        }
+        // Runtime complexity of O(MlogM)
         work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
-
-
-        return copyOfRange(work, work.length-k, work.length);
-
-
+        // Runtime complexity of O(MlogU)
+        work = deduplicatingSort(work,BY_VIDEO_ID,KEEP_LAST);
+        // Runtime complexity of O(UlogU)
+        work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
+        // Runtime Complexity of O(1)
+        if (work.length < k){
+        // Runtime Complexity of O(1)
+            return work;
+        }
+        else {
+            // Runtime complexity of O(K)
+            return copyOfRange(work, work.length - k, work.length);
+        }
+        /**
+         * Its overall runtime complexity is O(NlogN), because O(NLogN) + O(1) + O(logN)
+         * + O(log N) + O(N) +  O(MlogM) + O(MlogU) + O(UlogU) + O(1) + O(1) + O(K) = O(NlogN).
+         */
     }
 
     /**
@@ -113,10 +108,53 @@ public class DataAnalysis {
      */
     @SuppressWarnings("SameParameterValue")
     static String mostObsessedViewer(View[] views, String videoID) {
+        int workIndex = 0;
+        View[] work = new View[views.length];
+        for (int i = 0; i < views.length; i++){
+//      Loop INV: work[..workIndex-1] contains exactly those elements of views[..i-1] whose videoID() matches videoID.
+            if(views[i].videoID().compareTo(videoID) == 0){
+                work[workIndex] = views[i];
+                workIndex++;
+            }
+        }
+        work = copyOfRange(work,0,workIndex);
+        for(View w:work){
+            System.out.println(w);
+        }
+        if (work.length == 0){
+            return null;
+        }
+        else {
+            work = deduplicatingSort(work, BY_USER_ID, KEEP_ALL);
+            String max = work[0].userID();
+            int count = 1;
+            int maxCount =1;
+            for (int j = 1; j < work.length; j++){
+/**      Loop INV: Given that work[0..work.length-1] is sorted: maxUser has the most occurrences in work[0..j-1] with maxCount views,
+ *       and currentCount is the number of consecutive occurrences of work[j-1].userID() in work[0..j-1],
+ */
+                if (work[j].userID().compareTo(work[j-1].userID())==0 && work[j].userID().compareTo(max)==0 ){
+                    count++;
+                    maxCount++;
+                }
+                else if (work[j].userID().compareTo(work[j-1].userID())==0){
+                    count++;
+                }
+                else{
+                    count=1;
+                }
+                if(count>maxCount){
+                    maxCount = count;
+                    max = work[j].userID();
+                }
+            }
+            return max;
+        }
+
+
         // TODO 7: Implement this method according to its specifications. Make sure to add a comment
         //  documenting the invariant of each loop that you write. Your definition must have a
         //  worst-case runtime complexity of `O(N + M log M)`, where `N = views.length` and `M` is
         //  the number of entries of `views` with the given `videoID`.
-        throw new UnsupportedOperationException();
     }
 }
