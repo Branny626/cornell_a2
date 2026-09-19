@@ -73,11 +73,37 @@ public class DataAnalysis {
      */
     @SuppressWarnings("SameParameterValue")
     static View[] lastKViewedByUser(View[] views, String userID, int k) {
-        // TODO 6: Implement this method according to its specifications. Your definition must use
-        //  the `binarySearch()`, `copyOfRange()`, and/or `deduplicatingSort()` methods of the
-        //  `DataUtilities` class to manipulate the array data. You may not directly access the array
-        //  contents. Label each line of your definition with its worst-case runtime complexity.
-        throw new UnsupportedOperationException();
+        for (int m = 0; m < views.length; m ++){
+            System.out.println(views[m]);
+        }
+        View[] work = deduplicatingSort(views, BY_USER_ID, KEEP_ALL);
+        System.out.println("Should be kept all?");
+        for (int m = 0; m < work.length; m ++){
+            System.out.println(work[m]);
+        }
+        // Runtime complexity of O(1)
+        View key = new View(userID,null, null);
+        // Runtime complexity of O(logN)
+        int i = binarySearch(work,key,BY_USER_ID,LEFT);
+        System.out.println(i);
+        // Runtime complexity of O(logN)
+        int j = binarySearch(work,key,BY_USER_ID,RIGHT);
+        System.out.println(j);
+
+
+        work = copyOfRange(work,i,j);
+
+//        System.out.println("After Sorting");
+        work = deduplicatingSort(work,BY_VIDEO_ID,KEEP_LAST);
+//        for (int m = 0; m < work.length; m ++){
+//            System.out.println(work[m]);
+//        }
+        work = deduplicatingSort(work,BY_TIMESTAMP,KEEP_ALL);
+
+
+        return copyOfRange(work, work.length-k, work.length);
+
+
     }
 
     /**
