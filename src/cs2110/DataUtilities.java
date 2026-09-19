@@ -154,14 +154,17 @@ public class DataUtilities {
         if (end-begin <= 1)
             return end-begin;
 
-        for (int i = begin + 1; i < end; i++) {
-            if (cmp.compare(views[i - 1], views[i]) == 0) {
-                if (i == end - 1)
-                    return 1;
-                continue;
+        if (policy != KEEP_ALL) {
+            for (int i = begin + 1; i < end; i++) {
+                if (cmp.compare(views[i - 1], views[i]) == 0) {
+                    if (i == end - 1)
+                        return 1;
+                    continue;
+                }
+                break;
             }
-            break;
         }
+
 
         int mid = begin + (end - begin) / 2;
         int i = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
