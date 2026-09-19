@@ -118,9 +118,6 @@ public class DataAnalysis {
             }
         }
         work = copyOfRange(work,0,workIndex);
-        for(View w:work){
-            System.out.println(w);
-        }
         if (work.length == 0){
             return null;
         }
@@ -130,8 +127,8 @@ public class DataAnalysis {
             int count = 1;
             int maxCount =1;
             for (int j = 1; j < work.length; j++){
-/**      Loop INV: Given that work[0..work.length-1] is sorted: maxUser has the most occurrences in work[0..j-1] with maxCount views,
- *       and currentCount is the number of consecutive occurrences of work[j-1].userID() in work[0..j-1],
+/**      Loop INV: Given that work[0..work.length-1] is sorted: max has the most occurrences in work[0..j-1] with maxCount views,
+ *       and count is the number of consecutive occurrences of work[j-1].userID() in work[0..j-1],
  */
                 if (work[j].userID().compareTo(work[j-1].userID())==0 && work[j].userID().compareTo(max)==0 ){
                     count++;
