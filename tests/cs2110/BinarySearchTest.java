@@ -121,4 +121,14 @@ public class BinarySearchTest {
         assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
     }
 
+    @DisplayName("WHEN the array is empty, THEN `binarySearch()` returns 0 with any comparatpr and"
+            + " any search policy ")
+    @Test
+    public void testBinarySearchEmpty() {
+        View[] views = new View[]{};
+        View key = new View("A", "A", LocalDateTime.now());
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, RIGHT));
+    }
+
 }
