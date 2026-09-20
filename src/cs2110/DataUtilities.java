@@ -187,6 +187,7 @@ public class DataUtilities {
     static int merge(View[] views, View[] work, int leftBegin, int leftEnd,
                      int rightBegin, int rightEnd, Comparator<View> cmp, DedupPolicy policy) {
         int i = 0;
+        // Copies all the elements in the left array into the work array
         for (int l = leftBegin; l < leftEnd; l++){
             work[i] = views[l];
             i++;
@@ -194,11 +195,13 @@ public class DataUtilities {
         i = 0;
         int j = rightBegin;
         int k = leftBegin;
-        int count = 0;
         int endOfArray = leftEnd+rightEnd-rightBegin;
 
         if(policy == KEEP_ALL){
             while(k < endOfArray){
+                // If all the elements in the work array have not been used and the element in the left array
+                // is less than or equal to the element in the right array or all the elements in the right array
+                // have been used the method adds the element in the left array to the sorted array
                 if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     views[k] = work[i];
                     i++;
@@ -207,7 +210,6 @@ public class DataUtilities {
                     views[k] = views[j];
                     j++;
                 }
-                count++;
                 k++;
             }
         }
@@ -216,21 +218,17 @@ public class DataUtilities {
                 if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
                     if (k-leftBegin > 0 && cmp.compare(work[i], views[k-1]) == 0) {
                         k--;
-                        count--;
                         endOfArray--;
                     }
                     views[k] = work[i];
                     i++;
-                    count++;
                 }
                 else {
                     if (k-leftBegin > 0 && cmp.compare(views[j], views[k-1]) == 0) {
                         k--;
-                        count--;
                         endOfArray--;
                     }
                     views[k] = views[j];
-                    count++;
                     j++;
                 }
                 k++;
@@ -248,7 +246,6 @@ public class DataUtilities {
 
                     views[k] = work[i];
                     i++;
-                    count++;
                 }
                 else{
                     if(k-leftBegin > 0 && cmp.compare(views[k-1], views[j]) == 0) {
@@ -258,12 +255,11 @@ public class DataUtilities {
                     }
                     views[k] = views[j];
                     j++;
-                    count++;
                 }
                 k++;
             }
         }
-        return count;
+        return endOfArray-leftBegin;
     }
 
 }
