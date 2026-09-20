@@ -48,5 +48,59 @@ public class BinarySearchTest {
         assertEquals(6, binarySearch(views, key, BY_USER_ID, LEFT));
         assertEquals(6, binarySearch(views, key, BY_USER_ID, RIGHT));
     }
-    
+    @DisplayName("WHEN multiple of the `views` records has the target videoID, THEN `binarySearch()` "
+            + "with the BY_VIDEO_ID Comparator and LEFT search policy returns the index of the left most "
+            + "view.")
+    @Test
+    public void testBinarySearchLeft() {
+        View[] views = new View[]{
+                new View("S", "A", LocalDateTime.now()),
+                new View("B", "A", LocalDateTime.now()),
+                new View("C", "C", LocalDateTime.now()),
+                new View("D", "D", LocalDateTime.now()),
+                new View("E", "D", LocalDateTime.now()),
+                new View("F", "F", LocalDateTime.now())
+        };
+        View key = new View("A", "A", LocalDateTime.now());
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+    }
+    @DisplayName("WHEN multiple of the `views` records has the target dateTime, THEN `binarySearch()` "
+            + "with the DATETIME Comparator and RIGHT search policy returns the index of the right most "
+            + "view.")
+    @Test
+    public void testBinarySearchRight() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneDayAgo = now.minusDays(1);
+        View[] views = new View[]{
+                new View("A", "A", oneDayAgo),
+                new View("B", "A", oneDayAgo),
+                new View("C", "C", oneDayAgo),
+                new View("D", "D", now),
+                new View("E", "D", now),
+                new View("F", "F", now)
+        };
+        View key = new View("A", "A", now);
+        assertEquals(6, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+    }
+
+    @DisplayName("WHEN no `views` record has the target dateTime, THEN `binarySearch()` "
+            + "with the DATETIME Comparator and RIGHT search policy returns the index of the "
+            + "right most view with a dateTime less than or equal to the target.")
+    @Test
+    public void testBinarySearchRightNoExactMatch() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime fourDaysAgo = now.minusDays(4);
+        LocalDateTime threeDaysAgo = now.minusDays(3);
+        LocalDateTime twoDaysAgo = now.minusDays(2);
+        LocalDateTime oneDayAgo = now.minusDays(1);
+        View[] views = new View[]{
+                new View("A", "A", fourDaysAgo),
+                new View("B", "B", threeDaysAgo),
+                new View("C", "C", oneDayAgo),
+                new View("D", "D", now)
+        };
+        View key = new View("X", "X", twoDaysAgo);
+        assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+    }
+
 }
