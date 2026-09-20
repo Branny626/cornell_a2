@@ -104,7 +104,7 @@ public class DataUtilities {
                 return l;
             }
         }
-        return 1010101100;
+        return 1;
     }
 
 
