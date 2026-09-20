@@ -72,9 +72,6 @@ public class DataUtilities {
      */
     static int binarySearch(View[] views, View key, Comparator<View> cmp, SearchPolicy policy) {
         return binaryHelper(views, key,  cmp, policy, 0, views.length);
-        // TODO 1: Implement this method according to its specifications. Your implementation must
-        //  be recursive, include no loops, and have O(log N) worst-case runtime and space
-        //  complexities, where N = `views.length`. Consider delegating work to a helper method.
     }
 
     /**
@@ -135,8 +132,6 @@ public class DataUtilities {
         View[] work = new View[views.length];
         int x = dedupMergeSortRecursive(copy, work ,0, views.length, cmp, policy);
         return copyOfRange(copy,0,x);
-        // TODO 4a: Call dedupMergeSortRecursive(), passing in a copy of the `views` array. Use its
-        //  return value to obtain the return value for this method.
     }
 
     /**
@@ -150,11 +145,11 @@ public class DataUtilities {
      */
     static int dedupMergeSortRecursive(View[] views, View[] work, int begin, int end,
                                        Comparator<View> cmp, DedupPolicy policy) {
-        // TODO 4b: Implement recursive merge sort
         if (end-begin <= 1)
             return end-begin;
 
         if (policy != KEEP_ALL) {
+            // If all the elements in the array are duplicates, return a length of 1
             for (int i = begin + 1; i < end; i++) {
                 if (cmp.compare(views[i - 1], views[i]) == 0) {
                     if (i == end - 1)
@@ -167,9 +162,9 @@ public class DataUtilities {
 
 
         int mid = begin + (end - begin) / 2;
-        int i = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
-        int j = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
-        return merge(views, work, begin, begin + i, mid, mid + j, cmp, policy);
+        int leftLength = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
+        int rightLength = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
+        return merge(views, work, begin, begin + leftLength, mid, mid + rightLength, cmp, policy);
     }
 
     /**
@@ -216,6 +211,8 @@ public class DataUtilities {
         if(policy == KEEP_LAST){
             while(k<endOfArray){
                 if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i],views[j]) <= 0)){
+                    // If this  element is a duplicate of the previous element, replace the previous
+                    // element with this element and decrease the length of the sorted array
                     if (k-leftBegin > 0 && cmp.compare(work[i], views[k-1]) == 0) {
                         k--;
                         endOfArray--;
@@ -238,6 +235,8 @@ public class DataUtilities {
         if(policy == KEEP_FIRST){
             while(k<endOfArray){
                 if(i != leftEnd - leftBegin && (j==rightEnd || cmp.compare(work[i], views[j]) <= 0)){
+                    // If this  element is a duplicate of the previous element, decrease the length
+                    // of the array and skip this element
                     if (k-leftBegin > 0 && cmp.compare(views[k-1], work[i]) == 0) {
                         i++;
                         endOfArray--;
@@ -259,6 +258,7 @@ public class DataUtilities {
                 k++;
             }
         }
+        // return the length of the sorted array
         return endOfArray-leftBegin;
     }
 
