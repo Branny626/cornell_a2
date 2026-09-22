@@ -148,19 +148,6 @@ public class DataUtilities {
         if (end-begin <= 1)
             return end-begin;
 
-        if (policy != KEEP_ALL) {
-            // If all the elements in the array are duplicates, return a length of 1
-            for (int i = begin + 1; i < end; i++) {
-                if (cmp.compare(views[i - 1], views[i]) == 0) {
-                    if (i == end - 1)
-                        return 1;
-                    continue;
-                }
-                break;
-            }
-        }
-
-
         int mid = begin + (end - begin) / 2;
         int leftLength = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
         int rightLength = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
