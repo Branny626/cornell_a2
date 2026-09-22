@@ -1,25 +1,25 @@
 Assignment 2: Analyzing Video View Data
 
-Assignment completion time (rounded to nearest hour): 
+Assignment completion time (rounded to nearest hour): 10
 
-[x] the appropriate choice: [] Worked alone   [] Completed with a partner
+[x] the appropriate choice: [] Worked alone   [x] Completed with a partner
 
 Partner 1:
-  Name:
-  Net-ID:
+  Name: Fred Xiao
+  Net-ID: fx66
 
 Partner 2:
-  Name: 
-  Net-Id: 
+  Name: Brandon His
+  Net-Id: sh2765
 
 If you worked with a partner, use the space below to describe your collaboration.
 Where/when did you work on the assignment? Who took the lead on different parts? 
 
+We worked together on weekdays after class in the CS building and the libraries. Brandon took the lead on the binary sort algorithm and the data analysis methods. Fred took the lead on the merge algorithm and the binary sort tests.
 
 
 
-
-Did you use generative AI in any capacity for this assignment? [] Yes   [] No
+Did you use generative AI in any capacity for this assignment? [] Yes   [x] No
 
 If so, briefly describe how you used it in the space below, and certify the 
 prompts below this space. Which parts of the assignment (files, methods, etc.) 
