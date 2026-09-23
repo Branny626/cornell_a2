@@ -75,8 +75,10 @@ public class DataUtilities {
     }
 
     /**
-     * Returns the maximum value in array `nums[begin..]`. Requires that
-     * `0 <= begin < nums.length`.
+     * Performs a recursive binary search on the given `views` array for the given `key`. Returns the index
+     * `i` with `0 <= i <= views.length` consistent with the given SearchPolicy `policy` using the
+     * given Comparator `cmp`. No modifications are made to the array `views` as a result of this
+     * method. Requires that '0 <= l <= views.length' and '0 <= r <= view.length'
      */
     static int binaryHelper(View[] views, View key, Comparator<View> cmp, SearchPolicy policy, int l, int r) {
         if (policy == LEFT) {
