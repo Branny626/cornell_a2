@@ -9,7 +9,7 @@ Partner 1:
   Net-ID: fx66
 
 Partner 2:
-  Name: Brandon His
+  Name: Brandon Hsi
   Net-Id: sh2765
 
 If you worked with a partner, use the space below to describe your collaboration.
