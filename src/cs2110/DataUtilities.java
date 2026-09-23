@@ -149,6 +149,7 @@ public class DataUtilities {
             return end-begin;
 
         int mid = begin + (end - begin) / 2;
+        // Stores the lengths of the deduplicated arrays to be used in the call to the merge method
         int leftLength = dedupMergeSortRecursive(views, work, begin, mid, cmp, policy);
         int rightLength = dedupMergeSortRecursive(views, work, mid, end, cmp, policy);
         return merge(views, work, begin, begin + leftLength, mid, mid + rightLength, cmp, policy);
