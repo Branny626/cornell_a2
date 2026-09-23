@@ -337,4 +337,42 @@ public class DataUtilitiesTest {
         assertEquals(1, sorted.length);
         assertEquals("A", sorted[0].userID());
     }
+    @DisplayName("WHEN the last `views` record contains the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of that last record for LEFT, and "
+            + " the length of the array for RIGHT.")
+    @Test
+    public void testBinarySearchLastIndexExactMatch() {
+        View[] views = new View[]{
+                new View("A", "A", LocalDateTime.of(2026, 1, 1, 0, 0)),
+                new View("B", "B", LocalDateTime.of(2026, 1, 2, 0, 0)),
+                new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0)),
+        };
+        View key = new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0));
+        assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(2, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(2, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(3, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(3, binarySearch(views, key, BY_USER_ID, RIGHT));
+        assertEquals(3, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+
+    }
+
+    @DisplayName("WHEN all the `views` record contains the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of zero for LEFT, and "
+            + " the length of the array for RIGHT.")
+    @Test
+    public void testBinarySearchAllExactMatch() {
+        View[] views = new View[]{
+                new View("A", "B", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("D", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("E", "B", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("F", "E", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("G", "Y", LocalDateTime.of(2026, 1, 3, 0, 0)),
+        };
+        View key = new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(5, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+
+    }
+
 }

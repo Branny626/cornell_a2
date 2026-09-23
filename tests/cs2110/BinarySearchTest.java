@@ -181,7 +181,7 @@ public class BinarySearchTest {
         assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, LEFT));
     }
 
-    @DisplayName("WHEN the array is empty, THEN `binarySearch()` returns 0 with any comparatpr and"
+    @DisplayName("WHEN the array is empty, THEN `binarySearch()` returns 0 with any comparator and"
             + " any search policy ")
     @Test
     public void testBinarySearchEmpty() {
@@ -194,5 +194,111 @@ public class BinarySearchTest {
         assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
         assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
     }
+    @DisplayName("WHEN the first `views` record contains the key, THEN `binarySearch()` "
+            + "with any Comparator returns 0 for LEFT and 1 for RIGHT.")
+    @Test
+    public void testBinarySearchFirstIndexExactMatch() {
+        View[] views = new View[]{
+                new View("A", "A", LocalDateTime.of(2026, 1, 1, 0, 0)),
+                new View("B", "B", LocalDateTime.of(2026, 1, 2, 0, 0)),
+                new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("D", "C", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("D", "G", LocalDateTime.of(2026, 2, 3, 0, 0)),
+                new View("E", "I", LocalDateTime.of(2026, 3, 3, 0, 0)),
+        };
+        View key = new View("A", "A", LocalDateTime.of(2026, 1, 1, 0, 0));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_USER_ID, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
 
+    }
+
+    @DisplayName("WHEN the last `views` record contains the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of that last record for LEFT, and "
+            + " the length of the array for RIGHT.")
+    @Test
+    public void testBinarySearchLastIndexExactMatch() {
+        View[] views = new View[]{
+                new View("A", "A", LocalDateTime.of(2026, 1, 1, 0, 0)),
+                new View("B", "B", LocalDateTime.of(2026, 1, 2, 0, 0)),
+                new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0)),
+        };
+        View key = new View("C", "C", LocalDateTime.of(2026, 1, 3, 0, 0));
+        assertEquals(2, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(2, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(2, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(3, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(3, binarySearch(views, key, BY_USER_ID, RIGHT));
+        assertEquals(3, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+
+    }
+
+    @DisplayName("WHEN all the `views` record contains the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of zero for LEFT, and "
+            + " the length of the array for RIGHT.")
+    @Test
+    public void testBinarySearchAllExactMatch() {
+        View[] views = new View[]{
+                new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+                new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0)),
+        };
+        View key = new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(5, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(5, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+        assertEquals(5, binarySearch(views, key, BY_USER_ID, RIGHT));
+    }
+    @DisplayName("WHEN the views array contains a single element with the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of zero for LEFT, and 1 for RIGHT.")
+    @Test
+    public void testBinarySearchSingleElementWithKey() {
+        View[] views = new View[]{
+                new View("B", "B", LocalDateTime.of(2026, 2, 3, 0, 0)),
+        };
+        View key = new View("B", "B", LocalDateTime.of(2026, 2, 3, 0, 0));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_USER_ID, RIGHT));
+    }
+    @DisplayName("WHEN the views array contains a single element that is less than the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of 1 for both policies LEFT and RIGHT.")
+    @Test
+    public void testBinarySearchSingleElementLargerKey() {
+        View[] views = new View[]{
+                new View("B", "B", LocalDateTime.of(2026, 2, 3, 0, 0)),
+        };
+        View key = new View("C", "C", LocalDateTime.of(2026, 4, 3, 0, 0));
+        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(1, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(1, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(1, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+        assertEquals(1, binarySearch(views, key, BY_USER_ID, RIGHT));
+    }@DisplayName("WHEN the views array contains a single element that is greater than the key, THEN `binarySearch()` "
+            + "with any Comparator returns the index of 0 for both policies LEFT and RIGHT.")
+    @Test
+    public void testBinarySearchSingleElementSmallerKey() {
+        View[] views = new View[]{
+                new View("B", "B", LocalDateTime.of(2026, 2, 3, 0, 0)),
+        };
+        View key = new View("A", "A", LocalDateTime.of(2026, 1, 3, 0, 0));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, LEFT));
+        assertEquals(0, binarySearch(views, key, BY_TIMESTAMP, RIGHT));
+        assertEquals(0, binarySearch(views, key, BY_VIDEO_ID, RIGHT));
+        assertEquals(0, binarySearch(views, key, BY_USER_ID, RIGHT));
+    }
 }
